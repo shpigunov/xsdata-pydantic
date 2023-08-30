@@ -1,65 +1,65 @@
-from dataclasses import field
 from decimal import Decimal
-from pydantic.dataclasses import dataclass
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from xsdata.models.datatype import XmlDate
 
 __NAMESPACE__ = "foo"
 
 
-@dataclass(slots=True, kw_only=True)
-class Items:
-    item: List["Items.Item"] = field(
+class Items(BaseModel):
+    model_config = ConfigDict(defer_build=True)
+    item: List["Items.Item"] = Field(
         default_factory=list,
-        metadata={
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
         }
     )
 
-    @dataclass(slots=True, kw_only=True)
-    class Item:
-        product_name: str = field(
-            metadata={
+
+    class Item(BaseModel):
+        model_config = ConfigDict(defer_build=True)
+        product_name: str = Field(
+            json_schema_extra={
                 "name": "productName",
                 "type": "Element",
                 "namespace": "foo",
                 "required": True,
             }
         )
-        quantity: int = field(
-            metadata={
+        quantity: int = Field(
+            json_schema_extra={
                 "type": "Element",
                 "namespace": "foo",
                 "required": True,
                 "max_exclusive": 100,
             }
         )
-        usprice: Decimal = field(
-            metadata={
+        usprice: Decimal = Field(
+            json_schema_extra={
                 "name": "USPrice",
                 "type": "Element",
                 "namespace": "foo",
                 "required": True,
             }
         )
-        comment: Optional[str] = field(
+        comment: Optional[str] = Field(
             default=None,
-            metadata={
+            json_schema_extra={
                 "type": "Element",
                 "namespace": "foo",
             }
         )
-        ship_date: Optional[XmlDate] = field(
+        ship_date: Optional[XmlDate] = Field(
             default=None,
-            metadata={
+            json_schema_extra={
                 "name": "shipDate",
                 "type": "Element",
                 "namespace": "foo",
             }
         )
-        part_num: str = field(
-            metadata={
+        part_num: str = Field(
+            json_schema_extra={
                 "name": "partNum",
                 "type": "Attribute",
                 "required": True,
@@ -68,112 +68,113 @@ class Items:
         )
 
 
-@dataclass(slots=True, kw_only=True)
-class Usaddress:
+class Usaddress(BaseModel):
     class Meta:
         name = "USAddress"
 
-    name: str = field(
-        metadata={
+    model_config = ConfigDict(defer_build=True)
+    name: str = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    street: str = field(
-        metadata={
+    street: str = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    city: str = field(
-        metadata={
+    city: str = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    state: str = field(
-        metadata={
+    state: str = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    zip: Decimal = field(
-        metadata={
+    zip: Decimal = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    country: str = field(
+    country: str = Field(
         init=False,
         default="US",
-        metadata={
+        json_schema_extra={
             "type": "Attribute",
         }
     )
 
 
-@dataclass(slots=True, kw_only=True)
-class Comment:
+class Comment(BaseModel):
     class Meta:
         name = "comment"
         namespace = "foo"
 
-    value: str = field(
+    model_config = ConfigDict(defer_build=True)
+    value: str = Field(
         default="",
-        metadata={
+        json_schema_extra={
             "required": True,
         }
     )
 
 
-@dataclass(slots=True, kw_only=True)
-class PurchaseOrderType:
-    ship_to: Usaddress = field(
-        metadata={
+class PurchaseOrderType(BaseModel):
+    model_config = ConfigDict(defer_build=True)
+    ship_to: Usaddress = Field(
+        json_schema_extra={
             "name": "shipTo",
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    bill_to: Usaddress = field(
-        metadata={
+    bill_to: Usaddress = Field(
+        json_schema_extra={
             "name": "billTo",
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    comment: Optional[str] = field(
+    comment: Optional[str] = Field(
         default=None,
-        metadata={
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
         }
     )
-    items: Items = field(
-        metadata={
+    items: Items = Field(
+        json_schema_extra={
             "type": "Element",
             "namespace": "foo",
             "required": True,
         }
     )
-    order_date: Optional[XmlDate] = field(
+    order_date: Optional[XmlDate] = Field(
         default=None,
-        metadata={
+        json_schema_extra={
             "name": "orderDate",
             "type": "Attribute",
         }
     )
 
 
-@dataclass(slots=True, kw_only=True)
 class PurchaseOrder(PurchaseOrderType):
     class Meta:
         name = "purchaseOrder"
         namespace = "foo"
+
+    model_config = ConfigDict(defer_build=True)
