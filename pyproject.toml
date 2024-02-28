@@ -28,7 +28,7 @@ keywords = ["xsd", "wsdl", "schema", "dtd", "binding", "xml", "json", "dataclass
 requires-python = ">=3.7"
 dependencies = [
     "pydantic>=2.3",
-    "xsdata@git+https://github.com/tefra/xsdata",
+    "xsdata>=23.5",
 ]
 dynamic = ["version"]
 
